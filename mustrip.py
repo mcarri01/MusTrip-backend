@@ -7,8 +7,12 @@ from haversine import haversine
 
 app = Flask(__name__)
 
-@app.route("/", methods=['POST'])
-def hello():
+@app.route('/')
+def index():
+	return "Welcome"
+
+@app.route("/getPlaylist", methods=['POST'])
+def retrieve_playlist():
 	mylat = request.form["lat"]
 	mylng = request.form["lng"]
 	my_coord = (float(mylat), float(mylng))
@@ -39,7 +43,7 @@ def hello():
 	# Return the playlist ID in URI form
 	print("https://api.spotify.com/v1/users/thesoundsofspotify/playlists/" + playlist_id)
 	return "https://api.spotify.com/v1/users/thesoundsofspotify/playlists/" + playlist_id
-	
+
 if __name__ == "__main__":
 	app.run()
 

@@ -15,7 +15,7 @@ class mustripTestCase(unittest.TestCase):
         os.unlink(mustrip.app.config['DATABASE'])
 
     def test_post(self):
-        req = self.app.post('/', data=dict(
+        req = self.app.post('/getPlaylist', data=dict(
             lat='40',
             lng='-118'
         ))
