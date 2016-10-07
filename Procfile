@@ -1,1 +1,1 @@
-web: gunicorn <mustrip>:app --log-file -
+web: python mustrip.py
