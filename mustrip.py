@@ -11,8 +11,8 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 	return "Welcome"
+# TODO: Store user data with track ID.
 
-#TODO implement getting playlist by both city as well
 @app.route("/playlistbycity", methods=['POST'])
 def get_by_city():
 	city = request.form["city"]
@@ -32,11 +32,12 @@ def get_by_coord():
 	return retrieve_playlist(my_coord)
 
 def retrieve_playlist(my_coord):
-	
-	MONGODB_URI = "mongodb://mcarring:Keeker95@ds053156.mlab.com:53156/heroku_6132kr9d"
+
+
+	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
 	client = MongoClient(MONGODB_URI)
-	db = client.get_default_database()
-	collection = db.cityData
+	db = client.mustrip
+	collection = db.cities
 	city_list = collection.find()
 	# max distance between 2 points on earth
 	min_distance = 20036
