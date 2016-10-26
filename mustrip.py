@@ -63,7 +63,6 @@ def retrieve_playlist(my_coord):
 	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
 	client = MongoClient(MONGODB_URI)
 	db = client.mustrip
-	return db
 	city_list = db.cities.find()
 	# max distance between 2 points on earth
 	min_distance = 20036
