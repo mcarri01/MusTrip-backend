@@ -30,7 +30,7 @@ def add_user():
 		if user['username'] == user:
 			in_list = True
 	if not in_list:
-		user_list.insert_one(user)
+		db.users.insert_one(user)
 	return True
 
 @app.route("/playlistbycity", methods=['POST'])
