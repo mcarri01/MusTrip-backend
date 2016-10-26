@@ -31,15 +31,6 @@ def add_user():
 
 	return True
 
-
-# TODO: Store user data with playlist ID.
-@app.route('/getPlaylist', methods=['POST'])
-def get_playlist():
-	user = request.form["user"]
-	playlist_id = request.form["playlist"]
-	
-	return True
-
 @app.route("/playlistbycity", methods=['POST'])
 def get_by_city():
 	city = request.form["city"]
@@ -59,10 +50,7 @@ def get_by_coord():
 	return retrieve_playlist(my_coord)
 
 def retrieve_playlist(my_coord):
-
-	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
-	client = MongoClient(MONGODB_URI)
-	db = client.mustrip
+	db = db_login()
 	city_list = db.cities.find()
 	# max distance between 2 points on earth
 	min_distance = 20036
@@ -88,6 +76,10 @@ def retrieve_playlist(my_coord):
 	json_data = json.dumps(data)
 	return json_data
 
+def db_login():
+	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
+	client = MongoClient(MONGODB_URI)
+	return client.mustrip
 
 if __name__ == "__main__":
 
