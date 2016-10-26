@@ -89,9 +89,6 @@ def retrieve_playlist(my_coord):
 	json_data = json.dumps(data)
 	return json_data
 
-def db_login():
-
-
 
 if __name__ == "__main__":
 
