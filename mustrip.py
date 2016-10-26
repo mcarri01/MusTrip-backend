@@ -1,4 +1,5 @@
 import os
+import ast
 from flask import Flask
 from geopy.geocoders import Nominatim
 import json
@@ -23,16 +24,15 @@ def add_playlist():
 @app.route('/addUser', methods=['POST'])
 def add_user():
 	db = db_login()
-	user = request.form["user"]
+	req_user = request.form["user"]
 	user_list = db.users.find()
 	in_list = False
 	for user in user_list:
-		if user['username'] == user:
+		if user['username'] == req_user:
 			in_list = True
 	if not in_list:
-		user_obj['username'] = user
-		db.users.insert_one(user_obj)
-	return True
+		db.users.insert_one({"username": req_user})
+	return json.dumps({"username": req_user})
 
 @app.route("/playlistbycity", methods=['POST'])
 def get_by_city():

@@ -30,6 +30,10 @@ class mustripTestCase(unittest.TestCase):
         req = self.app.post('/playlistbycity', data=dict(
             city="Washington D.C."
         ))
+    def test_user(self):
+        req = self.app.post('/addUser', data=dict(
+            user="Test"
+        ))
 
 if __name__ == '__main__':
     unittest.main()
