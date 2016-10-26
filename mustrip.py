@@ -11,7 +11,34 @@ app = Flask(__name__)
 @app.route('/')
 def index():
 	return "Welcome"
-# TODO: Store user data with track ID.
+
+@app.route('/addPlaylist', methods['POST'])
+def add_playlist():
+	user = request.form["user"]
+	playlist_id = request.form["playlist"]
+
+
+	return True
+
+@app.route('/addUser', methods['POST'])
+def add_user():
+	db = db_login()
+	user = request.form["user"]
+	user_list = db.users.find()
+	user_exists = user_list.find({"user": user})
+	if not user_exists:
+		user_list.insert_one(user)
+
+	return True
+
+
+# TODO: Store user data with playlist ID.
+@app.route('/getPlaylist', methods=['POST'])
+def get_playlist():
+	user = request.form["user"]
+	playlist_id = request.form["playlist"]
+	
+	return True
 
 @app.route("/playlistbycity", methods=['POST'])
 def get_by_city():
@@ -33,12 +60,8 @@ def get_by_coord():
 
 def retrieve_playlist(my_coord):
 
-
-	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
-	client = MongoClient(MONGODB_URI)
-	db = client.mustrip
-	collection = db.cities
-	city_list = collection.find()
+	db = db_login()
+	city_list = db.cities.find()
 	# max distance between 2 points on earth
 	min_distance = 20036
 	city_playlist = 0
@@ -62,6 +85,12 @@ def retrieve_playlist(my_coord):
 	data['playlist'] = base_uri + playlist_id
 	json_data = json.dumps(data)
 	return json_data
+
+def db_login():
+
+	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
+	client = MongoClient(MONGODB_URI)
+	db = client.mustrip
 
 if __name__ == "__main__":
 
