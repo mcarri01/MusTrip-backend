@@ -25,7 +25,7 @@ def add_user():
 	db = db_login()
 	user = request.form["user"]
 	user_list = db.users.find()
-	user_exists = user_list.find({"user": user})
+	user_exists = user_list.find_one({"user": user})
 	if not user_exists:
 		user_list.insert_one(user)
 
