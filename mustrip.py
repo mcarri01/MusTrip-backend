@@ -91,6 +91,7 @@ def db_login():
 	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
 	client = MongoClient(MONGODB_URI)
 	db = client.mustrip
+	return db
 
 if __name__ == "__main__":
 
