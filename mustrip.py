@@ -29,10 +29,10 @@ def add_user():
 	in_list = False
 	for user in user_list:
 		if user['username'] == req_user:
-			in_list = True
-	if not in_list:
-		db.users.insert_one({"username": req_user})
-	return json.dumps({"username": req_user})
+			return json.dumps({"status": "exists"})
+
+	db.users.insert_one({"username": req_user})
+	return json.dumps({"status": "success"})
 
 @app.route("/playlistbycity", methods=['POST'])
 def get_by_city():
