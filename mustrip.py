@@ -26,7 +26,7 @@ def add_user():
 	user = request.form["user"]
 	user_list = db.users.find()
 	user_exists = user_list.find_one({"user": user})
-	if not user_exists:
+	for user_exists in get:
 		user_list.insert_one(user)
 
 	return True
