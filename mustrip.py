@@ -12,7 +12,7 @@ app = Flask(__name__)
 def index():
 	return "Welcome"
 
-@app.route('/addPlaylist', methods['POST'])
+@app.route('/addPlaylist', methods=['POST'])
 def add_playlist():
 	user = request.form["user"]
 	playlist_id = request.form["playlist"]
@@ -20,7 +20,7 @@ def add_playlist():
 
 	return True
 
-@app.route('/addUser', methods['POST'])
+@app.route('/addUser', methods=['POST'])
 def add_user():
 	db = db_login()
 	user = request.form["user"]
