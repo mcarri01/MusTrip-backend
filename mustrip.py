@@ -26,7 +26,7 @@ def add_user():
 	db = db_login()
 	req_user = request.form["user"]
 	user_list = db.users.find()
-	in_list = False
+
 	for user in user_list:
 		if user['username'] == req_user:
 			return json.dumps({"status": "exists"})
@@ -58,7 +58,7 @@ def retrieve_playlist(my_coord):
 	# max distance between 2 points on earth
 	min_distance = 20036
 	city_playlist = 0
-	city_name = ""
+	city_name = "NOT FOUND"
 	for city in city_list:
 		city_coord = (float(city.get('lat')), float(city.get('lng')))
 		distance = haversine(my_coord, city_coord)
