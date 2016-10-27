@@ -15,24 +15,54 @@ def index():
 
 @app.route('/addPlaylist', methods=['POST'])
 def add_playlist():
-	user = request.form["user"]
+
+	db = db_login()
+	req_user = request.form["user"]
 	playlist_id = request.form["playlist"]
+	user_exists = search_users(db, req_user)
+	if user_exists:
+		db.users.update_one({'username': req_user}, {"$addToSet": {'trips': {'playlists' : playlist_id}}})
+		return json.dumps({"status": "success"})
+	else:
+		return json.dumps({"status": "User not Found"})
+	
+
+@app.route("/addTrip", methods=["POST"])
+def add_trip():
+	db = db_login()
+	req_user = request.form["user"]
+	trip_id = request.form["trip_id"]
+	user_exists = search_users(db, req_user)
+	if user_exists:
+		db.users.update_one({'username': req_user}, {"$addToSet": {'trips': trip_id}})
+		return json.dumps({"status": "success"})
+	else:
+		return json.dumps({"status": "User not Found"})
 
 
-	return True
+
+@app.route("/getPlaylists", methods=["POST"])
+def get_playlists():
+	db = db_login()
+	req_user = request.form["user"]
+	user_exists = search_users(db, req_user)
+	if user_exists:
+		user = db.users.find_one({"username" : req_user})
+		return json.dumps(user['trips'])
+	else:
+		return json.dumps({"status": "NOT FOUND"})
 
 @app.route('/addUser', methods=['POST'])
 def add_user():
 	db = db_login()
 	req_user = request.form["user"]
 	user_list = db.users.find()
-
-	for user in user_list:
-		if user['username'] == req_user:
-			return json.dumps({"status": "exists"})
-
-	db.users.insert_one({"username": req_user})
-	return json.dumps({"status": "success"})
+	user_exists = search_users(db, req_user)
+	if user_exists:
+		db.users.insert_one({"username": req_user})
+		return json.dumps({"status": "exists"})
+	else:
+		return json.dumps({"status": "success"})
 
 @app.route("/playlistbycity", methods=['POST'])
 def get_by_city():
@@ -83,6 +113,15 @@ def db_login():
 	MONGODB_URI = "mongodb://mcarri01:mustrip@ds017896.mlab.com:17896/mustrip"
 	client = MongoClient(MONGODB_URI)
 	return client.mustrip
+
+def search_users(db, req_user):
+	in_list = False
+	user_list = db.users.find()
+	for user in user_list:
+		if user['username'] == req_user:
+			in_list = True
+			
+	return in_list
 
 if __name__ == "__main__":
 

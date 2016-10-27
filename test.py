@@ -37,6 +37,14 @@ class mustripTestCase(unittest.TestCase):
         self.assertEqual(data['city'], "Boston")
 
 
+    def test_new_user(self):
+        #user = generate_user()
+        res = self.app.post("/addUser", data=dict(
+            user= "Test",
+        ))
+        data = json.loads(res.get_data(as_text=True))
+        self.assertEqual(data['status'], "success")
+    
     def test_existing_user(self):
         res = self.app.post('/addUser', data=dict(
             user="Test",
@@ -44,13 +52,23 @@ class mustripTestCase(unittest.TestCase):
         data = json.loads(res.get_data(as_text=True))
         self.assertEqual(data['status'], "exists")
 
-    def test_new_user(self):
-        user = generate_user()
-        res = self.app.post("/addUser", data=dict(
-            user= user,
+
+
+    def test_add_playlist(self):
+        res = self.app.post("/addPlaylist", data=dict(
+            user="Test",
+            playlist="test2"
         ))
         data = json.loads(res.get_data(as_text=True))
         self.assertEqual(data['status'], "success")
+
+    def test_get_playlists(self):
+        res = self.app.post("/getPlaylists", data=dict(
+            user="Test",
+        ))
+        data = json.loads(res.get_data(as_text=True))
+        self.assertEqual(True, isinstance(data, list))
+
 
 if __name__ == '__main__':
     unittest.main()
