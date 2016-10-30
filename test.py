@@ -20,7 +20,7 @@ class mustripTestCase(unittest.TestCase):
     def tearDown(self):
         os.close(self.db_fd)
         os.unlink(mustrip.app.config['DATABASE'])
-
+    
     def test_coords(self):
         for i in range(50):
             res = self.app.post('/getPlaylist', data=dict(
@@ -36,39 +36,59 @@ class mustripTestCase(unittest.TestCase):
         data = json.loads(res.get_data(as_text=True))
         self.assertEqual(data['city'], "Boston")
 
-
+    
+    
     def test_new_user(self):
-        #user = generate_user()
+        user = generate_user()
         res = self.app.post("/addUser", data=dict(
-            user= "Test",
+            user= user,
         ))
         data = json.loads(res.get_data(as_text=True))
         self.assertEqual(data['status'], "success")
     
+     
     def test_existing_user(self):
         res = self.app.post('/addUser', data=dict(
             user="Test",
         ))
         data = json.loads(res.get_data(as_text=True))
-        self.assertEqual(data['status'], "exists")
+        self.assertEqual(data['status'], "User already exists")
+        
 
-
-
+    
     def test_add_playlist(self):
-        res = self.app.post("/addPlaylist", data=dict(
+        res = self.app.post("/addTrack", data=dict(
             user="Test",
-            playlist="test2"
+            trip_id="test",
+            track="test2"
         ))
         data = json.loads(res.get_data(as_text=True))
         self.assertEqual(data['status'], "success")
-
+    
+    
+    
     def test_get_playlists(self):
         res = self.app.post("/getPlaylists", data=dict(
             user="Test",
+            trip_id="test"
         ))
         data = json.loads(res.get_data(as_text=True))
         self.assertEqual(True, isinstance(data, list))
-
+    
+    def test_add_trip(self):
+        res = self.app.post("/addTrip", data=dict(
+            user="Test",
+            trip_id="test"
+        ))
+        data = json.loads(res.get_data(as_text=True))
+        self.assertEqual(data['status'], "Trip already exists")
+    
+    def test_get_user(self):
+        res = self.app.post("/getUser", data=dict(
+            user="Test",
+        ))
+        data = json.loads(res.get_data(as_text=True))
+        self.assertEqual(data['username'], "Test")
 
 if __name__ == '__main__':
     unittest.main()
