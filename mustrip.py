@@ -146,8 +146,9 @@ def retrieve_playlist(my_coord):
     playlist_id = city_playlist[playlist_index + len(search_string):]
     # Return the playlist ID in URI form
     data = {}
+
     data['city'] = city_name
-    data['playlist'] = base_uri + playlist_id
+    data['playlist'] = playlist_id
     json_data = json.dumps(data)
     return json_data
 
