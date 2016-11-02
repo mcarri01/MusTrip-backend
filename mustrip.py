@@ -99,12 +99,20 @@ def get_tracks():
 def get_by_city():
     """Returns playlist of popular music for given city name"""
     city = request.form["city"]
+    print(city);
     geolocator = Nominatim()
     location = geolocator.geocode(city, timeout=5)
-    lat = location.latitude
-    lng = location.longitude
-    my_coord = (float(lat), float(lng))
-    return retrieve_playlist(my_coord)
+    if location:
+        lat = location.latitude
+        lng = location.longitude
+        my_coord = (float(lat), float(lng))
+        return retrieve_playlist(my_coord)
+    else:
+        data['city'] = "error"
+        json_data = json.dumps(data)
+        return json_data            
+   
+        
 
 
 @APP.route("/getPlaylist", methods=['POST'])
