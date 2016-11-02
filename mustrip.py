@@ -108,6 +108,7 @@ def get_by_city():
         my_coord = (float(lat), float(lng))
         return retrieve_playlist(my_coord)
     else:
+        data = {}
         data['city'] = "error"
         json_data = json.dumps(data)
         return json_data            
