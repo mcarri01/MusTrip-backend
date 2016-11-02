@@ -53,8 +53,7 @@ def add_track():
     """Adds a new track to a particular track playlist"""
     _db = db_login()
     trip_id = request.form["trip_id"]
-    track_id = request.form["track"]    
-
+    track_id = request.form["track"]
     req_user = request.form["user"]
     query = {"$addToSet": {"trips.$.tracks": track_id}}
     _db.users.update_one({"username" : req_user, "trips.name" : trip_id}, query)
@@ -99,11 +98,9 @@ def get_tracks():
 @APP.route("/playlistbycity", methods=['POST'])
 def get_by_city():
     """Returns playlist of popular music for given city name"""
-    print("test")
     city = request.form["city"]
-    print(city)
     geolocator = Nominatim()
-    location = geolocator.geocode(city)
+    location = geolocator.geocode(city, timeout=5)
     lat = location.latitude
     lng = location.longitude
     my_coord = (float(lat), float(lng))
@@ -139,7 +136,6 @@ def retrieve_playlist(my_coord):
             city_playlist = city.get('distinctive_music')
             city_name = city.get('city')
 
-    base_uri = "https://api.spotify.com/v1/users/thesoundsofspotify/playlists/"
     search_string = "/playlist/"
     # Get index of ID
     playlist_index = city_playlist.index(search_string)
