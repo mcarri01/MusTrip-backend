@@ -111,6 +111,7 @@ def get_by_city():
         data = {}
         data['city'] = "error"
         json_data = json.dumps(data)
+        print(json_data);
         return json_data            
    
         
@@ -156,7 +157,6 @@ def retrieve_playlist(my_coord):
     data['city'] = city_name
     data['playlist'] = playlist_id
     json_data = json.dumps(data)
-    print(json_data);
     return json_data
 
 def db_login():
