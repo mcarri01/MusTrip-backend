@@ -129,6 +129,7 @@ def get_by_coord():
 # Helper functions for logic & generalizing
 ############################################################
 
+# TODO: Switch to using MongoDB geospatial data to query location instead
 def retrieve_playlist(my_coord):
     """Helper function to retrieve playlist regardless of input """
     _db = db_login()
@@ -155,6 +156,7 @@ def retrieve_playlist(my_coord):
     data['city'] = city_name
     data['playlist'] = playlist_id
     json_data = json.dumps(data)
+    print(json_data);
     return json_data
 
 def db_login():
